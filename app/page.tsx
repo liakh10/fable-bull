@@ -21,20 +21,22 @@ const NAV = [
 
 // The Season One chapters, for the master-detail explorer (drawn from the saga).
 const CHAPTER_LIST = [
-  { id: "awaken", n: 1, name: "The Bull Awakens" },
-  { id: "resistance", n: 2, name: "The Wall of Resistance" },
-  { id: "whale", n: 3, name: "The Whale Surfaces" },
+  { id: "awaken", n: 1, name: "gm, Bull" },
+  { id: "resistance", n: 2, name: "The Wall" },
+  { id: "whale", n: 3, name: "Whale Alert" },
   { id: "bearcave", n: 4, name: "The Bear Cave" },
-  { id: "temple", n: 5, name: "The Diamond Temple" },
+  { id: "temple", n: 5, name: "Diamond Temple" },
   { id: "moon", n: 5, name: "The Approach" },
 ];
 
 const FEATURES = [
-  { title: "A Branching Saga", body: "Eight illustrated chapters that fork on every choice. No two readings tell the same tale." },
-  { title: "Five Endings + One", body: "From Ascended to the Moon to Rekt in the Bear Cave — plus a secret sixth page few ever find." },
-  { title: "Play Right Here", body: "No download, no install. Open the book on the page and make your choices instantly." },
-  { title: "Yours to Keep", body: "Endings and best Conviction score save locally. Collect the whole canon of the valley." },
+  { title: "Pick a path", body: "Every choice forks the saga. No two runs alike." },
+  { title: "6 endings", body: "4 by choice, 2 secret. Moon — or the cave." },
+  { title: "Send it here", body: "No download. Open the book, make your call." },
 ];
+
+// Degen ticker phrases for the meme marquee.
+const MARQUEE = ["gm", "wagmi", "few understand", "diamond hooves", "wen moon", "probably nothing", "it's a fable ser", "hold the pen", "up only", "to the moon or the cave", "ngmi? we'll see", "so back"];
 
 function CABlock() {
   const [copied, setCopied] = useState(false);
@@ -121,6 +123,18 @@ function Accordion() {
   );
 }
 
+function Marquee() {
+  // Two copies back-to-back so the CSS loop is seamless.
+  const row = (
+    <div className="marquee-row" aria-hidden>
+      {MARQUEE.map((w, i) => (
+        <span className="marquee-item" key={i}>{w}<Spark size={16} className="marquee-spark" /></span>
+      ))}
+    </div>
+  );
+  return <div className="marquee">{row}{row}</div>;
+}
+
 export default function Home() {
   return (
     <main>
@@ -142,15 +156,14 @@ export default function Home() {
       <section id="top" className="hero">
         <div className="hero-grid">
           <div className="hero-copy">
-            <span className="pill">Season One · A fable in chapters</span>
+            <span className="pill">Season One · a playable fable</span>
             <h1 className="hero-title">Fable<span className="hero-title-spark"><Spark size={54} /></span>Bull</h1>
             <p className="hero-tag">
-              A bull with the mind of a spark climbs toward the moon. You hold the pen — every choice
-              bends the saga toward one of five endings, and a sixth that hides. Playable right on this page.
+              One bull. One spark for a brain. One thought: <b>up.</b> Pick the path, get your ending.
             </p>
             <div className="hero-cta">
-              <a href="#play" className="btn btn-coral btn-lg">Play the Fable</a>
-              <a href="#docs" className="btn btn-outline btn-lg">Read the Whitepaper</a>
+              <a href="#play" className="btn btn-coral btn-lg">Play now →</a>
+              <a href="#docs" className="btn btn-outline btn-lg">wtf is this?</a>
             </div>
             <div className="hero-token">
               <CABlock />
@@ -158,17 +171,22 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-art">
+            <span className="stamp stamp-1">100% on-chain fable</span>
+            <span className="stamp stamp-2">6 endings</span>
+            <span className="stamp stamp-3">wen moon?</span>
             <BullMascot className="mascot" />
           </div>
         </div>
       </section>
+
+      <Marquee />
 
       {/* PLAY — front and centre */}
       <section id="play" className="section section-play">
         <div className="section-head">
           <span className="pill">Play now</span>
           <h2 className="section-title">Open the book</h2>
-          <p className="section-lead">The Fable Saga plays right here. Make your choices and find your ending.</p>
+          <p className="section-lead">It plays right here. No wallet needed — send it.</p>
         </div>
         <Saga />
       </section>
@@ -177,8 +195,7 @@ export default function Home() {
       <section id="fable" className="section">
         <div className="section-head">
           <span className="pill">The Fable</span>
-          <h2 className="section-title">An illustrated saga you actually play</h2>
-          <p className="section-lead">{TOKEN_NAME} is a gamebook. Read a chapter, choose a path, live with the ending.</p>
+          <h2 className="section-title">A gamebook, not a whitepaper</h2>
         </div>
         <div className="features">
           {FEATURES.map((f) => (
@@ -216,9 +233,8 @@ export default function Home() {
       {/* DOCS */}
       <section id="docs" className="section">
         <div className="section-head">
-          <span className="pill">Whitepaper &amp; Docs</span>
-          <h2 className="section-title">The full canon</h2>
-          <p className="section-lead">Everything about the valley, the climb, and the saga.</p>
+          <span className="pill">Docs</span>
+          <h2 className="section-title">The scrolls (short, promise)</h2>
         </div>
         <Accordion />
         <div className="section-cta">

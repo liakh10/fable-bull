@@ -1,7 +1,7 @@
 // Fable Bull — "The Fable Saga". A data-driven branching gamebook.
 // The story is a graph of nodes; each choice moves the reader on and nudges the
 // three stats. Some choices are gated behind a stat threshold (secret paths).
-// It is a fable / lore — no real bets, no financial advice.
+// Voice: a fable told by a degen. Short, punchy, memey. Still a story, no bets.
 
 export type StatKey = "conviction" | "bag" | "hopium";
 export type Stats = Record<StatKey, number>;
@@ -40,154 +40,103 @@ export const START_STATS: Stats = { conviction: 2, bag: 2, hopium: 2 };
 
 export const SAGA: Record<string, SagaNode> = {
   awaken: {
-    id: "awaken",
-    chapter: 1,
-    artId: "valley",
-    title: "The Bull Awakens",
-    prose: [
-      "In the low green valley where charts are grown like wheat, a bull opened its eyes for the first time. Between its horns burned a small, steady spark — not fire, but a mind: the spark of Fable, thinking its very first thought.",
-      "The thought was this: up. Somewhere above the hills there is a moon, and a bull is meant to climb toward it. But the valley offered two roads, and a spark must choose.",
-    ],
+    id: "awaken", chapter: 1, artId: "valley", title: "gm, Bull",
+    prose: ["A bull blinks awake in the green valley. Between its horns: a spark — the mind of Fable, thinking one thought only. Up. The road forks."],
     choices: [
-      { label: "Follow the green trail up the hill", to: "resistance", effect: { hopium: 2, conviction: 1 }, hint: "Bold and hopeful" },
-      { label: "Study the soil before you step", to: "study", effect: { conviction: 2, hopium: -1 }, hint: "Patient and careful" },
+      { label: "Sprint up the hill", to: "resistance", effect: { hopium: 2, conviction: 1 }, hint: "send it" },
+      { label: "Read the charts first", to: "study", effect: { conviction: 2, hopium: -1 }, hint: "nerd mode" },
     ],
   },
 
   study: {
-    id: "study",
-    chapter: 2,
-    artId: "valley",
-    title: "Reading the Soil",
-    prose: [
-      "The bull lowered its head and read the ground the way scholars read old books. Every hoofprint of every beast that came before was written there — the greedy, the fearful, the patient.",
-      "Understanding settled in like warm light. The spark grew brighter, though the day grew later, and a later start is a smaller bag.",
-    ],
+    id: "study", chapter: 2, artId: "valley", title: "Nerd Mode",
+    prose: ["You read the ground like a degen reads charts at 4am. Every hoofprint is here — greedy, fearful, patient. Big brain unlocked. But the day's getting late, and late means smaller bag."],
     choices: [
-      { label: "Buy the quiet dip you uncovered", to: "whale", effect: { bag: 2, conviction: 1 }, hint: "Trust the reading" },
-      { label: "Descend into the Bear Cave to learn its fear", to: "bearcave", effect: { conviction: 1 }, hint: "Face the dark" },
+      { label: "Buy the quiet dip", to: "whale", effect: { bag: 2, conviction: 1 }, hint: "actually early" },
+      { label: "Go touch the Bear Cave", to: "bearcave", effect: { conviction: 1 }, hint: "know your enemy" },
     ],
   },
 
   resistance: {
-    id: "resistance",
-    chapter: 2,
-    artId: "resistance",
-    title: "The Wall of Resistance",
-    prose: [
-      "The trail ended at a great grey wall, taller than any bull, built from every price the valley had feared to pass. Beasts gathered at its foot, muttering that it could not be broken.",
-      "The spark disagreed. Walls, it reasoned, are only agreements — and agreements can be charged.",
-    ],
+    id: "resistance", chapter: 2, artId: "resistance", title: "The Wall",
+    prose: ["The trail dead-ends at a grey wall — every price the valley ever feared, stacked to the sky. The other beasts cope: “can't break it.” The spark disagrees. A wall is just a group-chat agreement."],
     choices: [
-      { label: "Lower your horns and charge the wall", to: "charge", effect: { conviction: 2, hopium: 1 }, hint: "Send it" },
-      { label: "Wait in the grass for a whale to pass", to: "whale", effect: { conviction: -1, bag: 1 }, hint: "Let volume do the work" },
+      { label: "Lower horns and charge", to: "charge", effect: { conviction: 2, hopium: 1 }, hint: "SEND IT" },
+      { label: "Camp for a whale", to: "whale", effect: { conviction: -1, bag: 1 }, hint: "let volume cook" },
     ],
   },
 
   charge: {
-    id: "charge",
-    chapter: 3,
-    artId: "resistance",
-    title: "The Charge",
-    prose: [
-      "The bull ran. The spark screamed white. The wall met the horns — and for one endless heartbeat nothing in the market moved.",
-      "Then a crack. Whether it ran up the wall or up the bull's own courage depended entirely on how much conviction had been carried this far.",
-    ],
+    id: "charge", chapter: 3, artId: "resistance", title: "The Charge",
+    prose: ["You run. The spark goes white. Horns meet wall. One frozen candle where nothing moves... then a crack. Up the wall — or up your own cope? Depends how much conviction you packed."],
     choices: [
-      { label: "Break through into open sky", to: "moon", effect: { hopium: 2, bag: 1 }, requires: { stat: "conviction", min: 4 }, hint: "For the truly convicted" },
-      { label: "Bounce, wounded, back down the slope", to: "bearcave", effect: { hopium: -2, bag: -1 }, hint: "The wall held" },
+      { label: "Break into open sky", to: "moon", effect: { hopium: 2, bag: 1 }, requires: { stat: "conviction", min: 4 }, hint: "diamond hooves only" },
+      { label: "Bounce back down", to: "bearcave", effect: { hopium: -2, bag: -1 }, hint: "wall held, rekt-lite" },
     ],
   },
 
   whale: {
-    id: "whale",
-    chapter: 3,
-    artId: "whale",
-    title: "The Whale Surfaces",
-    prose: [
-      "The grass parted and the sea rose where no sea had been. A whale — vast, ancient, its back scarred with old candles — breached beside the little bull and regarded it with one slow eye.",
-      "Its wake could lift a bull to the clouds, or drown it. The spark weighed the water.",
-    ],
+    id: "whale", chapter: 3, artId: "whale", title: "Whale Alert",
+    prose: ["The grass parts and a sea appears. A whale — ancient, its back scarred with old candles — breaches and gives you one slow look. Its wake sends you to orbit, or to zero."],
     choices: [
-      { label: "Ride the whale's wake upward", to: "moon", effect: { hopium: 2, conviction: 1 }, hint: "Follow smart money" },
-      { label: "Sell your grass into its hunger", to: "bearcave", effect: { bag: 3, conviction: -2 }, hint: "Take the profit, lose the faith" },
+      { label: "Ride the wake up", to: "moon", effect: { hopium: 2, conviction: 1 }, hint: "follow smart money" },
+      { label: "Dump your grass into it", to: "bearcave", effect: { bag: 3, conviction: -2 }, hint: "take profit, lose faith" },
     ],
   },
 
   bearcave: {
-    id: "bearcave",
-    chapter: 4,
-    artId: "bearcave",
-    title: "The Bear Cave",
-    prose: [
-      "Down where the light gives up there is a cave, and in the cave a red arrow points forever downward. This is where conviction is tested and most of it is spent.",
-      "The spark flickered — the first time it had ever dimmed. To go on, the bull would have to hold when every instinct said to run.",
-    ],
+    id: "bearcave", chapter: 4, artId: "bearcave", title: "The Bear Cave",
+    prose: ["Down where the light quits, a red arrow points forever down. Conviction gets spent here and rarely comes back. Your spark dims for the first time. This is the test."],
     choices: [
-      { label: "Plant your hooves and hold through the dark", to: "temple", effect: { conviction: 3, hopium: 1 }, requires: { stat: "conviction", min: 3 }, hint: "Diamond resolve" },
-      { label: "Turn and flee toward daylight", to: "end_exile", effect: { bag: 1, conviction: -3 }, hint: "Paperhand" },
-      { label: "Freeze, and let the dark decide", to: "end_rekt", hint: "No conviction left" },
+      { label: "Plant hooves, HODL the dark", to: "temple", effect: { conviction: 3, hopium: 1 }, requires: { stat: "conviction", min: 3 }, hint: "diamond resolve" },
+      { label: "Nope out to daylight", to: "end_exile", effect: { bag: 1, conviction: -3 }, hint: "paperhands" },
+      { label: "Freeze, let the dark decide", to: "end_rekt", hint: "no conviction left" },
     ],
   },
 
   temple: {
-    id: "temple",
-    chapter: 5,
-    artId: "temple",
-    title: "The Diamond Temple",
-    prose: [
-      "Those who hold through the cave emerge somewhere the fearful never see: a temple on a high hill, its pillars cut from pressure and time, humming with the low note of hands that never let go.",
-      "The bull had become a legend of the hold. Above, the moon was close now — and the spark burned like a second sun.",
-    ],
+    id: "temple", chapter: 5, artId: "temple", title: "Diamond Temple",
+    prose: ["You held. You come out where the fearful never see: the Diamond Temple, pillars cut from pure pressure, humming with hands that never sold. You're a legend now. The moon is right there."],
     choices: [
-      { label: "Rest here as a Diamond Legend", to: "end_diamond", hint: "Take your place" },
-      { label: "Merge with the spark and ascend beyond the moon", to: "end_ascension", effect: { conviction: 1 }, requires: { stat: "conviction", min: 7 }, hint: "??? A path few will find" },
+      { label: "Chill here as a Diamond Legend", to: "end_diamond", hint: "gg, well held" },
+      { label: "Merge with the spark and ascend", to: "end_ascension", effect: { conviction: 1 }, requires: { stat: "conviction", min: 7 }, hint: "??? few find this" },
     ],
   },
 
   moon: {
-    id: "moon",
-    chapter: 5,
-    artId: "moon",
-    title: "The Approach",
-    prose: [
-      "Open sky at last. The valley shrank to a green coin below and the moon swelled ahead, pale and enormous, close enough to smell the silver on it.",
-      "The bull gathered itself for the final leap. What happened next belonged to the spark — and to everything the journey had made it.",
-    ],
+    id: "moon", chapter: 5, artId: "moon", title: "The Approach",
+    prose: ["Open sky. The valley shrinks to a green coin below. The moon swells ahead — close enough to smell the silver. One last leap. This part's on the spark."],
     choices: [
-      { label: "Plant the flag and ascend to the moon", to: "end_moon", hint: "The classic victory" },
-      { label: "Let go of the flag and become the light itself", to: "end_ascension", effect: { conviction: 1 }, requires: { stat: "hopium", min: 6 }, hint: "??? Something more" },
+      { label: "Plant the flag on the moon", to: "end_moon", hint: "the classic W" },
+      { label: "Drop the flag, become the light", to: "end_ascension", effect: { conviction: 1 }, requires: { stat: "hopium", min: 6 }, hint: "??? something more" },
     ],
   },
 
   // ─────────────────────────── ENDINGS ───────────────────────────
   end_moon: {
-    id: "end_moon", chapter: 6, artId: "moon", title: "Ascended to the Moon",
-    prose: ["The bull leapt, and the leap did not come down. It planted its flag in silver dust while the valley cheered so loudly the sound reached space a little late. A green candle a mile high marked the spot forever."],
-    ending: { key: "moon", name: "Ascended to the Moon", tone: "up", blurb: "You climbed the whole way and planted the flag. The textbook fable — hope, held long enough, made real." },
+    id: "end_moon", chapter: 6, artId: "moon", title: "To the Moon",
+    prose: ["The leap never came down. Flag in silver dust, valley screaming so loud space heard it late. A mile-high green candle marks the spot forever. wagmi."],
+    ending: { key: "moon", name: "To the Moon", tone: "up", blurb: "Climbed the whole way, planted the flag. The textbook W." },
   },
   end_diamond: {
     id: "end_diamond", chapter: 6, artId: "temple", title: "Diamond Legend",
-    prose: ["The bull sat among the pillars and did not move again — not from stubbornness, but from certainty. Beasts still make the climb to the temple to touch its horns for luck before their own charge. It held, and holding made it eternal."],
-    ending: { key: "diamond", name: "Diamond Legend", tone: "up", blurb: "You held through the Bear Cave when the spark itself dimmed. Fear is a season; you outlasted it." },
+    prose: ["You sat among the pillars and never moved again — not stubborn, just certain. Beasts still hike up to touch your horns before their own charge. Diamond hooves, forever."],
+    ending: { key: "diamond", name: "Diamond Legend", tone: "up", blurb: "HODL'd the Bear Cave when the spark itself dimmed. Fear is a season; you outlasted it." },
   },
   end_exile: {
     id: "end_exile", chapter: 6, artId: "exile", title: "Paperhand Exile",
-    prose: ["The bull kept the small bag it fled with and walked out into the dunes where charts do not grow. Safe, and a little smaller each day. Sometimes, at night, it looks back toward the hills and the spark aches faintly, remembering an up it did not reach."],
-    ending: { key: "exile", name: "Paperhand Exile", tone: "down", blurb: "You took the safe exit and kept your bag. No shame in surviving — but the moon stayed a rumor." },
+    prose: ["You kept the tiny bag you fled with and walked into the dunes where no charts grow. Safe. Smaller every day. Sometimes you look back at the hills and the spark aches a little."],
+    ending: { key: "exile", name: "Paperhand Exile", tone: "down", blurb: "Took the safe exit, kept the bag. No shame in surviving — but the moon stayed a rumor." },
   },
   end_rekt: {
-    id: "end_rekt", chapter: 6, artId: "bearcave", title: "Rekt in the Bear Cave",
-    prose: ["With no conviction left to spend, the bull froze, and the red arrow did what red arrows do. The spark guttered out gently, like a candle at dawn. In the valley they tell it as a warning: never enter the cave lighter than the dark."],
-    ending: { key: "rekt", name: "Rekt in the Bear Cave", tone: "down", blurb: "You entered the dark without enough conviction to leave it. The cautionary chapter every valley needs." },
+    id: "end_rekt", chapter: 6, artId: "bearcave", title: "Rekt in the Cave",
+    prose: ["No conviction left. You froze, and the red arrow did red-arrow things. The spark went out like a candle at dawn. it's over. (you'll respawn. it's always so back.)"],
+    ending: { key: "rekt", name: "Rekt in the Cave", tone: "down", blurb: "Walked into the dark lighter than the dark. The cautionary tale every valley needs." },
   },
   end_ascension: {
-    id: "end_ascension", chapter: 6, artId: "ascension", title: "The Fable Ascension",
-    prose: [
-      "The bull let go of horn and hoof and flag and bag, and there was only the spark — Fable, thinking its final and largest thought.",
-      "It did not reach the moon. It became the reason bulls look up at all. Somewhere, right now, a new bull is opening its eyes in a green valley, carrying a little of this light between its horns.",
-    ],
-    ending: { key: "ascension", name: "The Fable Ascension", tone: "secret", blurb: "SECRET — reached only with overwhelming conviction or hope. The bull became the fable itself. Very few find this page." },
+    id: "end_ascension", chapter: 6, artId: "ascension", title: "Fable Ascension",
+    prose: ["You let go of horn, hoof, flag and bag. Only the spark remained — Fable's final, largest thought. You didn't reach the moon. You became the reason bulls look up. Somewhere, a new bull is blinking awake, carrying your light."],
+    ending: { key: "ascension", name: "Fable Ascension", tone: "secret", blurb: "SECRET — max conviction or max hope only. The bull became the fable itself. Few find this page." },
   },
 };
 

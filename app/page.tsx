@@ -8,14 +8,14 @@ import { SAGA, ALL_ENDINGS } from "./saga/data";
 import { BullMascot, Spark, XIcon, Scene } from "./art";
 import { getSfx } from "./sfx";
 
-// Saga is client-only (wallet + audio); load without SSR to avoid hydration noise.
+// Saga + scroll-bull are client-only; load without SSR to avoid hydration noise.
 const Saga = dynamic(() => import("./saga/Saga"), { ssr: false });
+const ScrollBull = dynamic(() => import("./ScrollBull"), { ssr: false });
 
 const NAV = [
-  { href: "#fable", label: "The Fable" },
   { href: "#play", label: "Play" },
+  { href: "#fable", label: "The Fable" },
   { href: "#chapters", label: "Chapters" },
-  { href: "#tokenomics", label: "Tokenomics" },
   { href: "#docs", label: "Docs" },
 ];
 
@@ -32,18 +32,18 @@ const CHAPTER_LIST = [
 const FEATURES = [
   { title: "A Branching Saga", body: "Eight illustrated chapters that fork on every choice. No two readings tell the same tale." },
   { title: "Five Endings + One", body: "From Ascended to the Moon to Rekt in the Bear Cave — plus a secret sixth page few ever find." },
-  { title: "Solana-native", body: "A fair-launch $FABLEBULL token. Wallet is a doorway, never a wager. The story stays free." },
+  { title: "Play Right Here", body: "No download, no install. Open the book on the page and make your choices instantly." },
   { title: "Yours to Keep", body: "Endings and best Conviction score save locally. Collect the whole canon of the valley." },
 ];
 
-function CABlock({ compact = false }: { compact?: boolean }) {
+function CABlock() {
   const [copied, setCopied] = useState(false);
   const real = isRealCA();
   const copy = () => {
     navigator.clipboard?.writeText(CA).then(() => { setCopied(true); getSfx().ding(); setTimeout(() => setCopied(false), 1400); }).catch(() => {});
   };
   return (
-    <div className={`ca ${compact ? "ca-compact" : ""}`}>
+    <div className="ca">
       <span className="ca-label">Contract</span>
       <code className="ca-value">{real ? CA : "SOON"}</code>
       {real && (
@@ -55,11 +55,12 @@ function CABlock({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function TokenLinks() {
+function BuyLinks({ small }: { small?: boolean }) {
+  const cls = small ? "btn btn-sm" : "btn";
   return (
-    <div className="token-links">
-      <a className="btn btn-coral" href={isRealCA() ? PUMP_URL + CA : PUMP_URL} target="_blank" rel="noreferrer">Pump Fun</a>
-      <a className="btn btn-outline" href={isRealCA() ? DEX_URL + CA : DEX_URL} target="_blank" rel="noreferrer">DexScreener</a>
+    <div className="buy-links">
+      <a className={`${cls} btn-coral`} href={isRealCA() ? PUMP_URL + CA : PUMP_URL} target="_blank" rel="noreferrer">Pump Fun</a>
+      <a className={`${cls} btn-outline`} href={isRealCA() ? DEX_URL + CA : DEX_URL} target="_blank" rel="noreferrer">DexScreener</a>
     </div>
   );
 }
@@ -89,6 +90,7 @@ function ChapterExplorer() {
           <p className="eyebrow">Chapter {node.chapter}</p>
           <h3 className="explorer-title">{node.title}</h3>
           <p className="prose">{node.prose[0]}</p>
+          <a href="#play" className="btn btn-coral btn-sm">Play this saga</a>
         </div>
       </div>
     </div>
@@ -122,13 +124,18 @@ function Accordion() {
 export default function Home() {
   return (
     <main>
+      <ScrollBull />
+
       {/* NAV */}
       <header className="nav">
         <a href="#top" className="brand"><Spark size={22} /> <b>Fable Bull</b> <span className="brand-ticker">{TICKER}</span></a>
         <nav className="nav-links">
           {NAV.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
         </nav>
-        <a href="#play" className="btn btn-coral btn-sm">Read the Fable</a>
+        <div className="nav-actions">
+          <a href={X_URL} target="_blank" rel="noreferrer" className="nav-x" aria-label="Follow on X"><XIcon size={18} /></a>
+          <a href="#play" className="btn btn-coral btn-sm">Play now</a>
+        </div>
       </header>
 
       {/* HERO */}
@@ -139,13 +146,16 @@ export default function Home() {
             <h1 className="hero-title">Fable<span className="hero-title-spark"><Spark size={54} /></span>Bull</h1>
             <p className="hero-tag">
               A bull with the mind of a spark climbs toward the moon. You hold the pen — every choice
-              bends the saga toward one of five endings, and a sixth that hides.
+              bends the saga toward one of five endings, and a sixth that hides. Playable right on this page.
             </p>
             <div className="hero-cta">
-              <a href="#play" className="btn btn-coral btn-lg">Begin the Fable</a>
+              <a href="#play" className="btn btn-coral btn-lg">Play the Fable</a>
               <a href="#docs" className="btn btn-outline btn-lg">Read the Whitepaper</a>
             </div>
-            <CABlock />
+            <div className="hero-token">
+              <CABlock />
+              <BuyLinks small />
+            </div>
           </div>
           <div className="hero-art">
             <BullMascot className="mascot" />
@@ -153,12 +163,22 @@ export default function Home() {
         </div>
       </section>
 
+      {/* PLAY — front and centre */}
+      <section id="play" className="section section-play">
+        <div className="section-head">
+          <span className="pill">Play now</span>
+          <h2 className="section-title">Open the book</h2>
+          <p className="section-lead">The Fable Saga plays right here. Make your choices and find your ending.</p>
+        </div>
+        <Saga />
+      </section>
+
       {/* FEATURES */}
       <section id="fable" className="section">
         <div className="section-head">
           <span className="pill">The Fable</span>
-          <h2 className="section-title">An illustrated saga, not a slot machine</h2>
-          <p className="section-lead">{TOKEN_NAME} is a gamebook you read. The token is the campfire it&apos;s told around.</p>
+          <h2 className="section-title">An illustrated saga you actually play</h2>
+          <p className="section-lead">{TOKEN_NAME} is a gamebook. Read a chapter, choose a path, live with the ending.</p>
         </div>
         <div className="features">
           {FEATURES.map((f) => (
@@ -169,16 +189,9 @@ export default function Home() {
             </article>
           ))}
         </div>
-      </section>
-
-      {/* PLAY */}
-      <section id="play" className="section section-play">
-        <div className="section-head">
-          <span className="pill">Play</span>
-          <h2 className="section-title">The Fable Saga</h2>
-          <p className="section-lead">Open the book and make your choices. It plays right here.</p>
+        <div className="section-cta">
+          <a href="#play" className="btn btn-coral btn-lg">Start reading — it&apos;s free</a>
         </div>
-        <Saga />
       </section>
 
       {/* CHAPTERS / ENDINGS explorer */}
@@ -200,39 +213,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TOKENOMICS */}
-      <section id="tokenomics" className="section section-token">
-        <div className="section-head">
-          <span className="pill">Tokenomics</span>
-          <h2 className="section-title">{TICKER}</h2>
-          <p className="section-lead">A fair launch. The story is free; the token is the ticket to the herd.</p>
-        </div>
-        <div className="token-grid">
-          <div className="token-stats">
-            {[
-              ["Supply", "1,000,000,000"],
-              ["Team", "0% — fair launch"],
-              ["Liquidity", "Burned at launch"],
-              ["Network", "Solana"],
-            ].map(([k, v]) => (
-              <div key={k} className="token-stat"><span>{k}</span><b>{v}</b></div>
-            ))}
-          </div>
-          <div className="token-ca">
-            <CABlock />
-            <TokenLinks />
-          </div>
-        </div>
-      </section>
-
       {/* DOCS */}
       <section id="docs" className="section">
         <div className="section-head">
           <span className="pill">Whitepaper &amp; Docs</span>
           <h2 className="section-title">The full canon</h2>
-          <p className="section-lead">Everything about the valley, the climb, and the token.</p>
+          <p className="section-lead">Everything about the valley, the climb, and the saga.</p>
         </div>
         <Accordion />
+        <div className="section-cta">
+          <a href="#play" className="btn btn-coral btn-lg">Enough reading — play it</a>
+        </div>
       </section>
 
       {/* FOOTER */}
@@ -240,7 +231,8 @@ export default function Home() {
         <div className="footer-grid">
           <div className="footer-brand">
             <a href="#top" className="brand"><Spark size={22} /> <b>Fable Bull</b></a>
-            <p className="footer-note">An illustrated fable on Solana. A story, not financial advice.</p>
+            <p className="footer-note">An illustrated fable on Solana. Open the book and make your choices.</p>
+            <BuyLinks small />
           </div>
           <div className="footer-col">
             <p className="footer-h">Game</p>
@@ -251,13 +243,12 @@ export default function Home() {
           <div className="footer-col">
             <p className="footer-h">Resources</p>
             <a href="#docs">Whitepaper</a>
-            <a href="#tokenomics">Tokenomics</a>
             <a href={X_URL} target="_blank" rel="noreferrer" className="footer-x"><XIcon size={16} /> Follow on X</a>
           </div>
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} {TOKEN_NAME}. {TICKER}</span>
-          <span className="footer-disc">Not financial advice. A fable for entertainment.</span>
+          <span className="footer-disc">Season One · The Climb</span>
         </div>
       </footer>
     </main>

@@ -28,14 +28,6 @@ export const DOCS: DocSection[] = [
     ],
   },
   {
-    id: "tokenomics",
-    title: "Tokenomics",
-    body: [
-      "$FABLEBULL is a fair-launch Solana token. Supply: 1,000,000,000. No team allocation beyond a small treasury for art and seasons; no presale, no vesting games.",
-      "Liquidity is burned at launch. The contract address appears across this site the moment it is live — with a copy button and direct Pump Fun / DexScreener links.",
-    ],
-  },
-  {
     id: "roadmap",
     title: "Roadmap — Seasons",
     body: [
@@ -51,7 +43,7 @@ export const DOCS: DocSection[] = [
       "Is this gambling? No. There are no bets, stakes or payouts — it is an interactive story.",
       "Do I need a wallet? No. The wallet is only a themed doorway; \"Read as Guest\" plays the identical saga.",
       "Is my progress saved? Yes, locally in your browser (endings collected + best score). Nothing is sent to a server.",
-      "Is $FABLEBULL financial advice? No. It is a memecoin and a fable. Never risk what you cannot afford to lose.",
+      "How many endings are there? Six — four you can reach by choice, and two secret ones gated behind overwhelming Conviction or Hopium.",
     ],
   },
 ];

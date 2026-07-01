@@ -29,39 +29,99 @@ export const XIcon: FC<{ size?: number; className?: string }> = ({ size = 20, cl
 // Line-art, coral accents, faintly editorial. Used large in the hero.
 export const BullMascot: FC<{ className?: string; style?: CSSProperties }> = ({ className, style }) => (
   <svg viewBox="0 0 320 320" fill="none" className={className} style={style} aria-label="Fable Bull" role="img">
+    <defs>
+      {/* hand-drawn wobble: displace every stroke with fractal noise (pencil feel) */}
+      <filter id="hd-hero" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="7" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="4.5" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
     {/* halo disc behind */}
-    <circle cx="160" cy="150" r="128" fill={GOLD} opacity="0.16" />
-    <circle cx="160" cy="150" r="128" stroke={CORAL} strokeWidth="1.5" strokeDasharray="2 7" opacity="0.5" />
-    {/* face mass */}
-    <path
-      d="M160 66c40 0 66 26 70 58 3 24-4 44-18 62-13 17-32 30-52 30s-39-13-52-30c-14-18-21-38-18-62 4-32 30-58 70-58Z"
-      fill="var(--paper)" stroke={INK} strokeWidth="4"
-    />
-    {/* cheek shading */}
-    <path d="M108 150c-2 20 4 40 18 56M212 150c2 20-4 40-18 56" stroke={INK} strokeWidth="2.5" opacity="0.4" strokeLinecap="round" />
-    {/* horns */}
-    <path d="M96 96c-26-10-46-6-58 8 18-2 30 4 42 20" fill="none" stroke={INK} strokeWidth="5" strokeLinecap="round" />
-    <path d="M224 96c26-10 46-6 58 8-18-2-30 4-42 20" fill="none" stroke={INK} strokeWidth="5" strokeLinecap="round" />
-    <path d="M96 96c-26-10-46-6-58 8 18-2 30 4 42 20" fill={GOLD} opacity="0.5" />
-    <path d="M224 96c26-10 46-6 58 8-18-2-30 4-42 20" fill={GOLD} opacity="0.5" />
-    {/* ears */}
-    <path d="M92 118c-20 2-34 12-40 28 16-6 30-6 44 2Z" fill="var(--paper)" stroke={INK} strokeWidth="4" />
-    <path d="M228 118c20 2 34 12 40 28-16-6-30-6-44 2Z" fill="var(--paper)" stroke={INK} strokeWidth="4" />
-    {/* eyes */}
-    <ellipse cx="128" cy="168" rx="10" ry="12" fill={INK} />
-    <ellipse cx="192" cy="168" rx="10" ry="12" fill={INK} />
-    <circle cx="131" cy="164" r="3" fill="var(--paper)" />
-    <circle cx="195" cy="164" r="3" fill="var(--paper)" />
-    {/* muzzle */}
-    <path d="M132 210c8-8 48-8 56 0 6 8 4 22-10 30-8 4-28 4-36 0-14-8-16-22-10-30Z" fill={GOLD} opacity="0.35" stroke={INK} strokeWidth="4" />
-    <ellipse cx="143" cy="230" rx="5" ry="6" fill={INK} />
-    <ellipse cx="177" cy="230" rx="5" ry="6" fill={INK} />
-    {/* the spark — its mind, between the horns */}
-    <g transform="translate(160 96)">
+    <circle cx="160" cy="152" r="130" fill={GOLD} opacity="0.14" />
+    <circle cx="160" cy="152" r="130" stroke={CORAL} strokeWidth="1.5" strokeDasharray="1 9" opacity="0.45" />
+
+    <g filter="url(#hd-hero)" strokeLinecap="round" strokeLinejoin="round">
+      {/* horns — two rough strokes each */}
+      <path d="M104 108C78 90 50 86 34 100c18-4 34 4 50 24" fill={GOLD} fillOpacity="0.35" stroke={INK} strokeWidth="4.5" />
+      <path d="M216 108c26-18 54-22 70-8-18-4-34 4-50 24" fill={GOLD} fillOpacity="0.35" stroke={INK} strokeWidth="4.5" />
+      <path d="M40 101c14-2 27 5 41 22" stroke={INK} strokeWidth="2" opacity="0.5" fill="none" />
+      <path d="M280 101c-14-2-27 5-41 22" stroke={INK} strokeWidth="2" opacity="0.5" fill="none" />
+
+      {/* ears */}
+      <path d="M96 132c-24-2-42 8-50 26 18-8 33-7 48 3Z" fill="var(--paper)" stroke={INK} strokeWidth="4.5" />
+      <path d="M224 132c24-2 42 8 50 26-18-8-33-7-48 3Z" fill="var(--paper)" stroke={INK} strokeWidth="4.5" />
+
+      {/* head — a loose, slightly lopsided outline (hand-drawn) */}
       <path
-        d="M0-30c1.4 8.4 4.2 13.4 9 16.4C13.8-10.6 20-10 20-10s-6.2.6-11 3.6C4.2-3.4 1.4 1.6 0 10c-1.4-8.4-4.2-13.4-9-16.4C-13.8-9.4-20-10-20-10s6.2-.6 11-3.6C-4.2-16.6-1.4-21.6 0-30Z"
+        d="M160 74c42-1 71 25 76 60 3 22-2 41-14 59-13 20-35 37-62 37s-49-17-62-37c-12-18-17-37-14-59 5-35 34-61 76-60Z"
+        fill="var(--paper)" stroke={INK} strokeWidth="5"
+      />
+      {/* forelock scribbles */}
+      <path d="M138 96c6 8 6 16 2 24M160 92c2 9 2 17-2 25M182 96c-6 8-6 16-2 24" stroke={INK} strokeWidth="3" opacity="0.75" fill="none" />
+
+      {/* cheek hatching (sketch shading) */}
+      <path d="M108 168c-3 18 3 36 15 52M212 168c3 18-3 36-15 52" stroke={INK} strokeWidth="2" opacity="0.35" fill="none" />
+      <path d="M100 150l10 6M104 164l9 5M210 150l-10 6M206 164l-9 5" stroke={INK} strokeWidth="1.6" opacity="0.3" />
+
+      {/* eyes */}
+      <path d="M120 172c8-6 20-4 24 4" stroke={INK} strokeWidth="3.5" fill="none" />
+      <path d="M176 176c4-8 16-10 24-4" stroke={INK} strokeWidth="3.5" fill="none" />
+      <circle cx="130" cy="180" r="7" fill={INK} />
+      <circle cx="190" cy="182" r="7" fill={INK} />
+      <circle cx="132" cy="178" r="2" fill="var(--paper)" />
+      <circle cx="192" cy="180" r="2" fill="var(--paper)" />
+
+      {/* muzzle + nostrils + nose ring (a little charm) */}
+      <path d="M128 216c10-9 54-9 64 0 7 9 5 25-11 34-9 5-32 5-42 0-16-9-18-25-11-34Z" fill={GOLD} fillOpacity="0.3" stroke={INK} strokeWidth="4.5" />
+      <path d="M143 234c3-3 8-3 11 0M166 234c3-3 8-3 11 0" stroke={INK} strokeWidth="3.5" fill="none" />
+      <path d="M150 250a10 10 0 0 0 20 0" stroke={CORAL} strokeWidth="3.5" fill="none" />
+    </g>
+
+    {/* the Claude spark — its mind, sitting on the brow */}
+    <g transform="translate(160 118)">
+      <path
+        d="M0-26c1.2 7.3 3.6 11.6 7.8 14.2C12-9.2 17.3-8.7 17.3-8.7s-5.3.5-9.5 3.1C3.6-3 1.2 1.4 0 8.7c-1.2-7.3-3.6-11.7-7.8-14.3C-12-8.2-17.3-8.7-17.3-8.7s5.3-.5 9.5-3.1C-3.6-14.4-1.2-18.7 0-26Z"
         fill={CORAL}
       />
+      <path d="M0-26c1.2 7.3 3.6 11.6 7.8 14.2" stroke="#fff6ee" strokeWidth="1" opacity="0.4" fill="none" />
+    </g>
+  </svg>
+);
+
+// ── The running bull — a side-view gallop for the scroll gimmick. Hand-drawn, with
+//    two alternating leg poses (animated in CSS) and the Claude spark on its head. ──
+export const RunningBull: FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 130 96" fill="none" className={className} aria-hidden>
+    <defs>
+      <filter id="hd-run" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="3" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+    <g className="rb-body" filter="url(#hd-run)" strokeLinecap="round" strokeLinejoin="round">
+      {/* body */}
+      <path d="M20 46c8-16 34-22 54-16 12 4 20 2 30-4-4 12-2 22 2 30-2 10-14 18-40 18S18 60 20 46Z"
+            fill="var(--paper)" stroke={INK} strokeWidth="4" />
+      {/* tail */}
+      <path d="M22 42c-8-3-15 1-18 9 5-3 10-2 14 3" stroke={INK} strokeWidth="3.5" fill="none" />
+      {/* head + horn */}
+      <path d="M96 26c10-2 18 3 20 12 1 8-3 15-12 18-8 2-16-2-18-10-2-9 2-18 10-20Z"
+            fill="var(--paper)" stroke={INK} strokeWidth="4" />
+      <path d="M104 16c8-6 16-6 22-2-7 0-12 4-15 11" stroke={INK} strokeWidth="3.5" fill="none" />
+      <circle cx="112" cy="40" r="2.6" fill={INK} />
+      <path d="M120 44c4 1 7 0 9-2" stroke={INK} strokeWidth="2.6" fill="none" />
+    </g>
+    {/* legs — pose A */}
+    <g className="rb-legs rb-legs-a" filter="url(#hd-run)" stroke={INK} strokeWidth="4" strokeLinecap="round">
+      <path d="M34 66l-6 20M50 68l2 20M74 68l8 18M90 64l12 16" fill="none" />
+    </g>
+    {/* legs — pose B */}
+    <g className="rb-legs rb-legs-b" filter="url(#hd-run)" stroke={INK} strokeWidth="4" strokeLinecap="round">
+      <path d="M34 66l8 18M50 68l-6 18M74 68l-4 20M90 64l6 20" fill="none" />
+    </g>
+    {/* the spark on its head */}
+    <g transform="translate(108 22)">
+      <path d="M0-9c.5 2.6 1.3 4.1 2.8 5.1C4.3-2.9 6-2.7 6-2.7s-1.7.2-3.2 1.2C1.3.5.5 2 0 4.6-.5 2-1.3.5-2.8-.5-4.3-1.5-6-2.7-6-2.7s1.7-.2 3.2-1.2C-1.3-5-.5-6.4 0-9Z" fill={CORAL} />
     </g>
   </svg>
 );

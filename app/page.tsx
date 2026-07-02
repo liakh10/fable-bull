@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { CA, TICKER, X_URL, PUMP_URL, DEX_URL, isRealCA } from "./config";
@@ -97,22 +97,7 @@ function DoodleArrow({ className, flip }: { className?: string; flip?: boolean }
 
 export default function Home() {
   useReveal();
-  const stageRef = useRef<HTMLDivElement>(null);
   const [muted, setMutedState] = useState(false);
-
-  // the bull is alive: tilt the hero toward the cursor
-  const onStageMove = (e: React.MouseEvent) => {
-    const el = stageRef.current; if (!el) return;
-    const r = el.getBoundingClientRect();
-    const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
-    const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
-    el.style.setProperty("--ry", `${dx * 7}deg`);
-    el.style.setProperty("--rx", `${-dy * 7}deg`);
-  };
-  const onStageLeave = () => {
-    const el = stageRef.current; if (!el) return;
-    el.style.setProperty("--ry", "0deg"); el.style.setProperty("--rx", "0deg");
-  };
 
   // reflect music state once the site is awake
   useEffect(() => {
@@ -148,16 +133,10 @@ export default function Home() {
         <section id="top" className="hero">
           <span className="pill reveal">certified 200 IQ · on Solana</span>
 
-          <div
-            className="hero-stage reveal"
-            ref={stageRef}
-            onMouseMove={onStageMove}
-            onMouseLeave={onStageLeave}
-          >
+          <div className="hero-stage reveal">
             <span className="ann ann-1">200 IQ<DoodleArrow className="ann-arrow" /></span>
             <span className="ann ann-2"><DoodleArrow className="ann-arrow" flip />on-chain brain</span>
             <span className="ann ann-3">wen moon? he already knows<DoodleArrow className="ann-arrow" /></span>
-            <span className="hero-glow" />
             <Image className="hero-bull" src="/bull.png" alt="Fable Bull" width={560} height={560} priority />
           </div>
 

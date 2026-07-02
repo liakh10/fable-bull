@@ -1,15 +1,40 @@
 import sharp from "sharp";
 import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import { dirname, join, resolve } from "path";
+import { readFileSync } from "fs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// Favicon is generated straight from the authored bull avatar (public/bull.png)
-// so the tab icon is the actual character. Re-run after replacing the avatar.
+// Favicon rule: the icon is ALWAYS just the ticker (text) on the brand colour —
+// never the avatar/illustration. Ticker is read from app/config.ts so it stays
+// in sync automatically.
+function readTicker() {
+  try {
+    const src = readFileSync(resolve(root, "app/config.ts"), "utf8");
+    const m = src.match(/TICKER\s*=\s*["'`]([^"'`]+)["'`]/);
+    return (m ? m[1] : "$TICKER").replace(/^\$/, "");
+  } catch { return "TICKER"; }
+}
+
+const TICKER = readTicker(); // e.g. "FABLEBULL"
+
+// Auto-fit the ticker onto one line: bold sans advance ≈ 0.72em/char, target
+// width ≈ 430px inside the 512 square. (SVG renderers here ignore textLength.)
+const AVAIL = 430;
+const size = Math.min(140, Math.floor(AVAIL / Math.max(1, TICKER.length * 0.72)));
+
+const ART = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="#e8641e" stroke="#1e1a15" stroke-width="20"/>
+  <text x="256" y="230" text-anchor="middle" font-family="Arial Black, Helvetica, sans-serif" font-weight="900"
+        font-size="176" fill="#fbf0de">$</text>
+  <text x="256" y="392" text-anchor="middle" font-family="Arial Black, Helvetica, sans-serif" font-weight="900"
+        font-size="${size}" fill="#fbf0de">${TICKER}</text>
+</svg>`;
+
 async function main() {
-  const src = join(root, "public/bull.png");
-  await sharp(src).resize(256, 256).png({ compressionLevel: 9 }).toFile(join(root, "app/icon.png"));
-  await sharp(src).resize(180, 180).png({ compressionLevel: 9 }).toFile(join(root, "app/apple-icon.png"));
-  console.log("favicon generated from public/bull.png");
+  const buf = Buffer.from(ART);
+  await sharp(buf).resize(256, 256).png({ compressionLevel: 9 }).toFile(join(root, "app/icon.png"));
+  await sharp(buf).resize(180, 180).png({ compressionLevel: 9 }).toFile(join(root, "app/apple-icon.png"));
+  console.log(`favicon generated from ticker: $${TICKER}`);
 }
 main().catch((e) => { console.error(e); process.exit(1); });

@@ -81,7 +81,6 @@ export default function Enter() {
 
       {phase === "wake" && (
         <button className="wake" onClick={wake} aria-label="Tap to wake the bull">
-          <span className="wake-glow" />
           <span className="wake-img">
             <Image src="/bull.png" alt="Fable Bull" width={360} height={360} priority />
           </span>

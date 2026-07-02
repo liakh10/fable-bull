@@ -1,12 +1,11 @@
-import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Inter, JetBrains_Mono } from "next/font/google";
 
-// Fable Bull identity — an editorial storybook: an expressive serif display for
-// headings/prose-openers, a humanist sans for body, and mono for the CA.
-// Deliberately unlike the bold/pixel/comic faces used by the other hub games.
-export const display = Fraunces({
+// Fable Bull identity v2 — "the smartest bull alive".
+// Bricolage Grotesque: a characterful modern display (not the safe serif from before).
+// JetBrains Mono carries the "AI thinking / boot log / CA" voice. Inter for body.
+export const display = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "900"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-display",
 });
 export const sans = Inter({

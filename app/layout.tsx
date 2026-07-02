@@ -5,7 +5,7 @@ import { TICKER, TOKEN_NAME } from "./config";
 import { display, sans, mono } from "./fonts";
 
 export const metadata: Metadata = {
-  title: `${TICKER} — Fable Bull`,
+  title: TICKER, // tab title is always just the ticker
   description: `${TOKEN_NAME} — the smartest bull alive. A bull with the mind of Fable. Run his mind through a branching, playable fable on Solana.`,
 };
 

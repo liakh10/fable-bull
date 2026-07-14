@@ -118,7 +118,7 @@ export default function Home() {
       <main>
         {/* NAV */}
         <header className="nav">
-          <a href="#top" className="brand"><Spark size={22} /> <b>Fable Bull</b> <span className="brand-ticker">{TICKER}</span></a>
+          <a href="#top" className="brand"><Image src="/x-avatar.png" alt="" width={28} height={28} style={{ borderRadius: "50%", objectFit: "cover" }} /> <b>Fable Bull</b> <span className="brand-ticker">{TICKER}</span></a>
           <nav className="nav-links">{NAV.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}</nav>
           <div className="nav-actions">
             <button className="icon-btn" onClick={toggleMute} aria-label="Toggle sound" title="sound">
@@ -210,7 +210,7 @@ export default function Home() {
         {/* FOOTER */}
         <footer className="footer">
           <div className="footer-top reveal">
-            <a href="#top" className="brand"><Spark size={22} /> <b>Fable Bull</b></a>
+            <a href="#top" className="brand"><Image src="/x-avatar.png" alt="" width={24} height={24} style={{ borderRadius: "50%", objectFit: "cover" }} /> <b>Fable Bull</b></a>
             <div className="footer-links">
               <a href="#play">Play</a><a href="#mind">The Mind</a><a href="#notes">Notes</a>
               <a href={X_URL} target="_blank" rel="noreferrer" className="footer-x"><XIcon size={16} /> X</a>
